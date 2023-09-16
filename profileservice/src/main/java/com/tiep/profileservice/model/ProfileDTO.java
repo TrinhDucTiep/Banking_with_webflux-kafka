@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @ToString
 public class ProfileDTO {
-    private long id;
+    private Long id;
     private String email;
     private String status;
     private double initialBalance;
@@ -29,7 +29,7 @@ public class ProfileDTO {
     public static ProfileDTO entityToDto(Profile profile) {
         ProfileDTO profileDTO = new ProfileDTO();
         profileDTO.setId(profile.getId());
-        profileDTO.setEmail(profileDTO.getEmail());
+        profileDTO.setEmail(profile.getEmail());
         profileDTO.setName(profile.getName());
         profileDTO.setStatus(profile.getStatus());
         profileDTO.setRole(profile.getRole());
