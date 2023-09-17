@@ -103,6 +103,11 @@
             <artifactId>rxjava</artifactId>
             <version>2.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.tiep</groupId>
+            <artifactId>commonservice</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

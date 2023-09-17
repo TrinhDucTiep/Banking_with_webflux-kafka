@@ -1,5 +1,6 @@
 package com.tiep.profileservice.service;
 
+import com.tiep.commonservice.common.CommonException;
 import com.tiep.profileservice.data.Profile;
 import com.tiep.profileservice.model.ProfileDTO;
 import com.tiep.profileservice.repository.ProfileRepository;
@@ -7,6 +8,7 @@ import com.tiep.profileservice.utils.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,7 +37,7 @@ public class ProfileService {
         return checkDuplicate(profileDTO.getEmail())
                 .flatMap(isDuplicate -> {
                     if (Boolean.TRUE.equals(isDuplicate)) {
-                        return Mono.error(new Exception("Duplicate Profile"));
+                        return Mono.error(new CommonException("PF02", "Duplicate profile!", HttpStatus.BAD_REQUEST));
                     } else {
                         profileDTO.setStatus(Constant.STATUS_PROFILE_PENDING);
                         return createProfile(profileDTO);
