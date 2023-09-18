@@ -1,0 +1,35 @@
+{
+  "$id": "https://example.com/createPayment.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Validate create profile request",
+  "description": "Create new profile",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "Email address",
+      "format": "email"
+    },
+    "initialBalance": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Initial balance"
+    },
+    "name": {
+      "type": "string",
+      "description": "Fullname of user",
+      "pattern": "([A-Za-z])"
+    },
+    "role": {
+      "type": "string",
+      "description": "Role of user",
+      "enum": [
+        "CUSTOMER",
+        "DEVELOPER"
+      ],
+      "pattern": "([A-Za-z])"
+    }
+  },
+  "required": ["email", "initialBalance", "name", "role"]
+}
