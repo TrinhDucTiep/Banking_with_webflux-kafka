@@ -1,10 +1,13 @@
 package com.tiep.profileservice.service;
 
+import com.google.gson.Gson;
 import com.tiep.commonservice.common.CommonException;
 import com.tiep.profileservice.data.Profile;
+import com.tiep.profileservice.event.EventProducer;
 import com.tiep.profileservice.model.ProfileDTO;
 import com.tiep.profileservice.repository.ProfileRepository;
 import com.tiep.profileservice.utils.Constant;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +17,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
+@Slf4j
 public class ProfileService {
-    private static final Logger log = LoggerFactory.getLogger(ProfileService.class);
+    Gson gson = new Gson();
 
     @Autowired
     private ProfileRepository profileRepository;
+
+    @Autowired
+    private EventProducer eventProducer;
 
     public Flux<ProfileDTO> getAllProfile() {
         return profileRepository.findAll()
@@ -52,7 +59,10 @@ public class ProfileService {
                 .map(ProfileDTO::entityToDto)
                 .doOnError(throwable -> log.error(throwable.getMessage()))
                 .doOnSuccess(dto -> {
-
+                    dto.setInitialBalance(profileDTO.getInitialBalance());
+                    eventProducer
+                            .send(com.tiep.commonservice.utils.Constant.PROFILE_ONBOARDING_TOPIC, gson.toJson(dto))
+                            .subscribe();
                 });
     }
 }
