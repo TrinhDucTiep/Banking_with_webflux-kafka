@@ -41,7 +41,11 @@ public class EventConsumer {
 
         accountService.createNewAccount(accountDTO).subscribe(
                 res -> {
-                    // tạm thời để đây sau này xử lý tiếp các bước sau sau khi tạo account thành công
+                    // set trạng thái cho profile
+                    profileDTO.setStatus(Constant.STATUS_PROFILE_ACTIVE);
+                    eventProducer
+                            .send(Constant.PROFILE_ONBOARDED_TOPIC, gson.toJson(profileDTO))
+                            .subscribe();
                 }
         );
     }

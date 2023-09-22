@@ -65,4 +65,21 @@ public class ProfileService {
                             .subscribe();
                 });
     }
+
+    public Mono<ProfileDTO> updateStatusProfile(ProfileDTO profileDTO) {
+        return getDetailProfileByEmail(profileDTO.getEmail())
+                .map(ProfileDTO::dtoToEntity)
+                .flatMap(profile -> {
+                    profile.setStatus(profileDTO.getStatus());
+                    return profileRepository.save(profile);
+                })
+                .map(ProfileDTO::entityToDto)
+                .doOnError(throwable -> log.error(throwable.getMessage()));
+    }
+
+    public Mono<ProfileDTO> getDetailProfileByEmail(String email) {
+        return profileRepository.findByEmail(email)
+                .map(ProfileDTO::entityToDto)
+                .switchIfEmpty(Mono.error(new CommonException("PF03", "Profile not found", HttpStatus.NOT_FOUND)));
+    }
 }
