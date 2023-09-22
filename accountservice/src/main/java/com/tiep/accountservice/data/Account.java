@@ -17,16 +17,16 @@ public class Account {
     private String email;
     private String currency;
     private double balance;
-    private double reversed;
+    private double reserved;
 
     @Version
     private Long version;
 
-    public Account(String id, String email, String currency, double balance, double reversed) {
+    public Account(String id, String email, String currency, double balance, double reserved) {
         this.id = id;
         this.email = email;
         this.currency = currency;
         this.balance = balance;
-        this.reversed = reversed;
+        this.reserved = reserved;
     }
 }
